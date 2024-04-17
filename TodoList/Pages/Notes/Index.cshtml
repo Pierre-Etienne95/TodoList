@@ -1,0 +1,48 @@
+﻿@page
+@model TodoList.Pages.Notes.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Nouvelle tâche</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Note[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Note[0].Contenu)
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{     
+            var sortedNotes = Model.Note.OrderByDescending(n => n.Priorite).ThenBy(n => n.Title).ToList();
+
+            foreach (var item in sortedNotes)
+            {
+                <tr style="@(item.Priorite ? "color: red;" : "")">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contenu)
+                    </td>
+                    
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Modifier</a> |
+                        <a asp-page="./Details" asp-route-id="@item.Id">Détail</a> |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Supprimer</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
